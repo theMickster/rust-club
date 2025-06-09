@@ -1,0 +1,8 @@
+{
+    "workbench.iconTheme": "material-icon-theme",
+    "material-icon-theme.folders.associations": {
+        "proyectos-tontos": "Seeders",
+    },
+    "explorer.autoReveal": true,
+    "explorer.compactFolders": false
+}
