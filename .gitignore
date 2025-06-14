@@ -406,3 +406,4 @@ FodyWeavers.xsd
 *.sln.iml
 
 proyectos-tontos/*/main.exe
+proyectos-tontos/**/target/
