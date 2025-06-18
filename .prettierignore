@@ -1,0 +1,6 @@
+target
+schemas
+about.hbs
+
+# CI output
+clippy_result.sarif
