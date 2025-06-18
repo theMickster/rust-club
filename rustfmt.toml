@@ -1,0 +1,10 @@
+comment_width = 125
+wrap_comments = true
+max_width = 125 
+reorder_imports = true
+reorder_modules = true
+format_code_in_doc_comments = true 
+
+# Sort and group imports
+group_imports = "StdExternalCrate"
+imports_granularity = "Crate"
