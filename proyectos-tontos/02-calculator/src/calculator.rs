@@ -25,7 +25,7 @@ impl Calculator {
         self.total
     }
 
-    pub fn add(&mut self, input: i32) {        
+    pub fn add(&mut self, input: i32) {
         self.total += input;
     }
 
@@ -47,7 +47,6 @@ impl Calculator {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -61,7 +60,7 @@ mod tests {
     #[test]
     fn test_calculator_clear_succeeds() {
         let mut sut = Calculator::new("Texas Instruments", "TI-83 Plus");
-        
+
         sut.add(10);
         assert_eq!(sut.get_total(), 10);
 
@@ -71,11 +70,7 @@ mod tests {
 
     #[test]
     fn test_calculator_add_succeeds() {
-        let test_cases = vec![
-            (1, 2, 3),
-            (3, 8, 11),
-            (5, 15, 20),
-        ];
+        let test_cases = vec![(1, 2, 3), (3, 8, 11), (5, 15, 20)];
 
         for (a, b, expected) in test_cases {
             let mut sut = Calculator::new("Texas Instruments", "TI-95");
@@ -87,11 +82,7 @@ mod tests {
 
     #[test]
     fn test_calculator_subtract_succeeds() {
-        let test_cases = vec![
-            (5, 2, 3),
-            (10, 8, 2),
-            (20, 15, 5),
-        ];
+        let test_cases = vec![(5, 2, 3), (10, 8, 2), (20, 15, 5)];
 
         for (a, b, expected) in test_cases {
             let mut sut = Calculator::new("Texas Instruments", "TI-74");
@@ -103,11 +94,7 @@ mod tests {
 
     #[test]
     fn test_calculator_multiply_succeeds() {
-        let test_cases = vec![
-            (2, 3, 6),
-            (4, 5, 20),
-            (6, 7, 42),
-        ];
+        let test_cases = vec![(2, 3, 6), (4, 5, 20), (6, 7, 42)];
 
         for (a, b, expected) in test_cases {
             let mut sut = Calculator::new("Texas Instruments", "TI-81");
@@ -119,11 +106,7 @@ mod tests {
 
     #[test]
     fn test_calculator_divide_succeeds() {
-        let test_cases = vec![
-            (6, 3, 2),
-            (20, 5, 4),
-            (42, 7, 6),
-        ];
+        let test_cases = vec![(6, 3, 2), (20, 5, 4), (42, 7, 6)];
 
         for (a, b, expected) in test_cases {
             let mut sut = Calculator::new("Texas Instruments", "TI-84 Plus Silver Edition");
@@ -138,12 +121,11 @@ mod tests {
 
     #[test]
     fn test_calculator_divide_returns_correct_error() {
-        
         let mut sut = Calculator::new("Texas Instruments", "TI-84 Plus Silver Edition");
         sut.add(10);
         let result = sut.divide(0);
-        
+
         assert!(result.is_err());
-        assert_eq!(result.unwrap_err(), "Cannot divide by zero");        
-    }    
+        assert_eq!(result.unwrap_err(), "Cannot divide by zero");
+    }
 }
