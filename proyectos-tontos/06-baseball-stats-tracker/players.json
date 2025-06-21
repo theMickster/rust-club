@@ -1,0 +1,52 @@
+{
+  "players": [
+    {
+      "name": "Mike Trout",
+      "team": "Los Angeles Angels",
+      "position": "CF",
+      "batting_stats": {
+        "at_bats": 500,
+        "hits": 165,
+        "singles": 90,
+        "doubles": 30,
+        "triples": 5,
+        "home_runs": 40,
+        "runs_batted_in": 104,
+        "walks": 85,
+        "strikeouts": 120
+      }
+    },
+    {
+      "name": "Aaron Judge",
+      "team": "Yankees",
+      "position": "RF",
+      "batting_stats": {
+        "at_bats": 550,
+        "hits": 175,
+        "singles": 80,
+        "doubles": 32,
+        "triples": 2,
+        "home_runs": 62,
+        "runs_batted_in": 131,
+        "walks": 111,
+        "strikeouts": 0
+      }
+    },
+    {
+      "name": "Mookie Betts",
+      "team": "Dodgers",
+      "position": "RF",
+      "batting_stats": {
+        "at_bats": 520,
+        "hits": 167,
+        "singles": 88,
+        "doubles": 35,
+        "triples": 4,
+        "home_runs": 42,
+        "runs_batted_in": 82,
+        "walks": 68,
+        "strikeouts": 0
+      }
+    }
+  ]
+}

@@ -1,5 +1,4 @@
-mod baseball;
-use baseball::{Player, StatsTracker};
+use baseball_stats_tracker::{Player, StatsTracker};
 
 fn main() {
     println!("Hello baseball statistics tracker!");
@@ -77,6 +76,24 @@ fn main() {
     match tracker.find_player("Babe Ruth") {
         Ok(player) => println!("🔍 Found: {}", player),
         Err(e) => println!("❌ Error: {:?}", e),
+    }
+
+    println!("\n💾 Saving tracker to file...");
+    match tracker.save_to_file("players.json") {
+        Ok(_) => println!("✅ Successfully saved to players.json"),
+        Err(e) => println!("❌ Failed to save: {}", e),
+    }
+
+    println!("\n📂 Loading tracker from file...");
+    match StatsTracker::load_from_file("players.json") {
+        Ok(loaded_tracker) => {
+            println!("✅ Successfully loaded! Found {} players", loaded_tracker.count());
+            println!("\n🏆 Loaded Leaderboard:");
+            for (i, player) in loaded_tracker.leaderboard_by_ops().iter().enumerate() {
+                println!("{}. {}", i + 1, player);
+            }
+        },
+        Err(e) => println!("❌ Failed to load: {}", e),
     }
 
 }
