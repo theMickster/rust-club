@@ -72,3 +72,81 @@ impl fmt::Display for BattingStats {
         )
     }
 }
+
+#[cfg(test)]
+mod tests{
+    use super::*;
+
+    fn create_batting_stats(
+        at_bats: u32,
+        hits: u32,
+        singles: u32,
+        doubles: u32,
+        triples: u32,
+        home_runs: u32,
+        runs_batted_in: u32,
+        walks: u32,
+        strikeouts: u32,
+    ) -> BattingStats {
+        BattingStats {
+            at_bats,
+            hits,
+            singles,
+            doubles,
+            triples,
+            home_runs,
+            runs_batted_in,
+            walks,
+            strikeouts,
+        }
+    }
+
+    #[test]
+    fn test_new_batting_stats_are_empty(){
+        let result = BattingStats::new();
+
+        assert_eq!(result.at_bats, 0);
+        assert_eq!(result.hits, 0);
+        assert_eq!(result.singles, 0);
+        assert_eq!(result.doubles, 0);
+        assert_eq!(result.triples, 0);
+        assert_eq!(result.home_runs, 0);
+        assert_eq!(result.runs_batted_in, 0);
+        assert_eq!(result.walks, 0);
+        assert_eq!(result.strikeouts, 0);
+        assert_eq!(result.batting_average(), 0.0);
+        assert_eq!(result.slugging_percentage(), 0.0);
+        assert_eq!(result.on_base_percentage(), 0.0);
+    }
+
+    #[test]
+    fn test_batting_stats_display() {
+        let result = create_batting_stats(75, 18, 10, 4, 1, 3, 14, 6, 17);
+        assert_eq!(format!("{}", result), "Batting Stats ==> AVG: 0.24 || HR: 3 || RBI: 14 || OPS: 0.736");
+    }
+
+    #[test]
+    fn test_batting_average(){
+        let result = create_batting_stats(100, 25, 15, 5, 2, 3, 20, 10, 30);
+        assert_eq!(result.batting_average(), 0.25);
+    }
+
+    #[test]
+    fn test_slugging_percentage(){
+        let result = create_batting_stats(100, 25, 15, 5, 2, 3, 20, 10, 30);
+        assert_eq!(result.slugging_percentage(), 0.43);
+    }
+
+    #[test]
+    fn test_on_base_percentage(){
+        let result = create_batting_stats(100, 25, 15, 5, 2, 3, 20, 10, 30);
+        assert_eq!(result.on_base_percentage(), 0.3181818);
+    }
+
+    #[test]
+    fn test_ops(){
+        let result = create_batting_stats(100, 25, 15, 5, 2, 3, 20, 10, 30);
+        assert_eq!(result.ops(), 0.7481818);
+    }
+
+}
