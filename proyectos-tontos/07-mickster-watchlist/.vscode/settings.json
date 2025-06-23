@@ -1,0 +1,5 @@
+{
+  // Disable auto-detection of tasks to prevent conflicts
+  "rust-analyzer.showUnlinkedFileNotification": false,
+  "task.autoDetect": "off"
+}
