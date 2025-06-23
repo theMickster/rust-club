@@ -1,0 +1,14 @@
+[package]
+name = "mickster-movie-watchlist"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "mickster-movie-watchlist"
+path = "src/main.rs"
+
+[lib]
+name = "mickster_movie_watchlist"
+path = "src/lib.rs"
+
+[dependencies]

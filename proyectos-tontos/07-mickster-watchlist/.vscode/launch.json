@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug Watchlist",
+      "cargo": {
+        "args": ["build", "--bin=mickster-movie-watchlist", "--package=mickster-movie-watchlist"],
+        "filter": {
+          "name": "mickster-movie-watchlist",
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}
