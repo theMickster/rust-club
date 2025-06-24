@@ -405,5 +405,5 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-proyectos-tontos/*/main.exe
-proyectos-tontos/**/target/
+*/main.exe
+**/target/
