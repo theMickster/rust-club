@@ -11,6 +11,7 @@ pub trait Repository {
     
     fn save_scorecard(&mut self, scorecard: &Scorecard) -> Result<()>;
     fn get_scorecard(&self, round_id: &Uuid) -> Result<Option<Scorecard>>;
+    fn get_scorecards_by_player( &self, player_id: &Uuid) -> Result<Vec<Scorecard>>;
     fn list_scorecards(&self) -> Result<Vec<Scorecard>>;
 }
 
@@ -101,4 +102,10 @@ impl Repository for FileRepository {
         }
         Ok(scorecards)
     }
+
+    fn get_scorecards_by_player(&self, player_id: &Uuid) -> Result<Vec<Scorecard>> {
+        let results = self.list_scorecards()?;
+        Ok(results.into_iter().filter(|x | &x.player_id == player_id).collect())
+    }
+
 }
