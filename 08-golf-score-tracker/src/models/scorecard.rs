@@ -37,6 +37,10 @@ impl Scorecard {
         Ok(())
     }
 
+    pub fn get_par (&self, hole: u8) -> Option<u8> {
+        self.pars.get(&hole).copied()
+    }
+
     pub fn get_score(&self, hole: u8) -> Option<u8> {
         self.scores.get(&hole).copied()
     }

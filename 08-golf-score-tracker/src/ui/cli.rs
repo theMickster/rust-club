@@ -43,4 +43,8 @@ pub enum Commands {
     },
     
     ListCourses,
+
+    ShowPlayerStatistics {
+        player_id: Uuid,
+    },
 }

@@ -2,7 +2,7 @@ use std::path::PathBuf;
 use anyhow::{Context, Result};
 use clap::Parser;
 
-use golf_score_tracker::{FileRepository, Player, Repository, Scorecard};
+use golf_score_tracker::{FileRepository, Player, PlayerStatistics, Repository, Scorecard};
 use golf_score_tracker::ui::{Cli, Commands};
 use golf_score_tracker::utils::{get_course_pars, list_available_courses};
 
@@ -105,6 +105,46 @@ fn main() -> Result<()> {
                 println!("  • {}", course);
             }
             println!("\nUse --course <name> when creating a scorecard");
+        }
+    
+        Commands::ShowPlayerStatistics {player_id} => {
+            let player = repo.get_player(&player_id)
+                .context("Failed to retrieve player")?
+                .ok_or_else(|| anyhow::anyhow!("Player {} not found", player_id))?;
+
+            let scorecards = repo.get_scorecards_by_player(&player_id)
+                .context("Failed to retrieve scorecards")?;
+
+            if scorecards.is_empty() {
+                println!("No scorecards found for player {}", player.name);
+                return Ok(());
+            }
+            let stats = PlayerStatistics::from_scorecards(&scorecards);
+            
+            println!("📊 Statistics for {}", player.name);
+            println!("   ⛳️ Total rounds: {}", stats.total_rounds);
+            println!("   🏁 Completed rounds: {}", stats.completed_rounds);
+
+            if let Some(avg) = stats.average_score {
+                println!("   ⚖️ Average score: {:.2}", avg);
+            }
+            
+            if let Some(best) = stats.best_score {
+                println!("   🏆 Best score: {}", best);
+            }
+            
+            if let Some(worst) = stats.worst_score {
+                println!("   🆘 Worst score: {}", worst);
+            }
+
+            println!("   Total under par: {}", stats.total_under_par);
+            println!("   Total over par: {}", stats.total_over_par);
+            println!("\n   Hole Performance:");
+            println!("      Eagles: {}", stats.eagles);
+            println!("      Birdies: {}", stats.birdies);
+            println!("      Pars: {}", stats.pars);
+            println!("      Bogeys: {}", stats.bogeys);
+            println!("      Double bogeys+: {}", stats.double_bogeys);
         }
     }
 
