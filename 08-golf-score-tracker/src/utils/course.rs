@@ -1,6 +1,48 @@
+//! Golf course layout definitions and utilities.
+//!
+//! This module provides functions to generate standard and famous golf course
+//! par layouts. Course layouts are represented as `BTreeMap<u8, u8>` where
+//! the key is the hole number (1-18) and the value is the par for that hole.
+//!
+//! # Examples
+//!
+//! ```
+//! use golf_score_tracker::utils::{create_standard_pars, get_course_pars};
+//! use std::collections::BTreeMap;
+//!
+//! // Create a standard 18-hole course
+//! let pars = create_standard_pars(18);
+//! assert_eq!(pars.len(), 18);
+//!
+//! // Get a famous course by name
+//! let masters = get_course_pars("masters", 18);
+//! assert_eq!(masters.len(), 18);
+//! ```
+
 use std::collections::BTreeMap;
 use std::collections::HashMap;
 
+/// Function pointer type for course par generation functions.
+///
+/// This type alias represents functions that take no arguments and return
+/// a complete course layout as a `BTreeMap`.
+pub type CourseParGenerator = fn() -> BTreeMap<u8, u8>;
+
+/// Creates a standard golf course with algorithmically generated pars.
+///
+/// This function generates a course layout with variety based on hole numbers.
+/// The pattern uses modulo arithmetic to distribute par 3s, 4s, and 5s across
+/// the course.
+///
+/// # Arguments
+///
+/// * `holes` - Number of holes on the course (typically 9 or 18)
+///
+/// # Returns
+///
+/// A `BTreeMap` where keys are hole numbers (1 to `holes`) and values are
+/// the par for each hole (3, 4, or 5).
+///
 pub fn create_standard_pars(holes: u8) -> BTreeMap<u8, u8> {
     let mut pars = BTreeMap::new();
 
@@ -15,6 +57,22 @@ pub fn create_standard_pars(holes: u8) -> BTreeMap<u8, u8> {
     pars
 }
 
+
+/// Creates the Augusta National (Masters Tournament) course layout.
+///
+/// Returns the exact par layout used at Augusta National Golf Club, home
+/// of the Masters Tournament. This is one of golf's most famous courses.
+///
+/// # Returns
+///
+/// An 18-hole course with the authentic Augusta National par values.
+///
+/// # Course Details
+///
+/// - **Total Par**: 72
+/// - **Par 3s**: Holes 4, 6, 12, 16
+/// - **Par 5s**: Holes 2, 8, 13, 15
+/// - **Par 4s**: All remaining holes
 pub fn create_august_national_pars() -> BTreeMap<u8, u8> {
     let pars = [
         (1, 4), (2, 5), (3, 4), (4, 3), (5, 4), (6, 3),
@@ -60,8 +118,16 @@ pub fn torrey_pines_south_course_pars() -> BTreeMap<u8, u8> {
     pars.iter().copied().collect()
 }
 
-pub type CourseParGenerator = fn() -> BTreeMap<u8, u8>;
-
+/// Returns a catalog of all available named courses.
+///
+/// This function provides a lookup table mapping course names to their
+/// par generation functions. Use this to dynamically select courses by name.
+///
+/// # Returns
+///
+/// A `HashMap` where keys are course names (lowercase, hyphenated) and
+/// values are function pointers that generate the course layout.
+/// 
 pub fn get_course_catalog() -> HashMap<String, CourseParGenerator> { 
     let mut catalog: HashMap<String, CourseParGenerator> = HashMap::new();
     catalog.insert("Augusta_National".to_string(), create_august_national_pars);
@@ -72,6 +138,21 @@ pub fn get_course_catalog() -> HashMap<String, CourseParGenerator> {
     catalog
 }
 
+/// Gets course pars by name, falling back to standard layout.
+///
+/// This is the primary function for retrieving course layouts. It checks
+/// the course catalog for a named course, and if not found, generates a
+/// standard layout with the specified number of holes.
+///
+/// # Arguments
+///
+/// * `course_name` - Name of the course (e.g., "masters", "pebble-beach")
+/// * `holes` - Number of holes if using standard layout
+///
+/// # Returns
+///
+/// Course par layout as a `BTreeMap<u8, u8>`.
+///
 pub fn get_course_pars(course_name: &str, holes: u8) -> BTreeMap<u8, u8> {
     let catalog = get_course_catalog();
     
@@ -82,6 +163,14 @@ pub fn get_course_pars(course_name: &str, holes: u8) -> BTreeMap<u8, u8> {
     }
 }
 
+/// Lists all available course names.
+///
+/// Returns a vector of course names that can be used with `get_course_pars()`.
+///
+/// # Returns
+///
+/// Vector of course name strings (e.g., `["masters", "pebble-beach", ...]`)
+///
 pub fn list_available_courses() -> Vec<String> {
     get_course_catalog().keys().cloned().collect()
 }

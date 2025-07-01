@@ -1,5 +1,58 @@
+//! Player statistics calculation and aggregation.
+//!
+//! This module provides functionality to calculate comprehensive golf statistics
+//! from a collection of scorecards. Statistics include scoring averages, best/worst
+//! performances, and hole-by-hole analysis.
+//!
+//! # Examples
+//!
+//! ```
+//! use golf_score_tracker::{Player, Scorecard, PlayerStatistics};
+//! use std::collections::BTreeMap;
+//!
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! let player = Player::new("Tiger Woods", Some(0.0))?;
+//! 
+//! // Create a simple 9-hole scorecard
+//! let mut pars = BTreeMap::new();
+//! for hole in 1..=9 {
+//!     pars.insert(hole, 4);
+//! }
+//! 
+//! let mut scorecard = Scorecard::new(player.id, 9, pars)?;
+//! for hole in 1..=9 {
+//!     scorecard.record_score(hole, 4)?;
+//! }
+//! 
+//! // Calculate statistics
+//! let stats = PlayerStatistics::from_scorecards(&[scorecard]);
+//! assert_eq!(stats.completed_rounds, 1);
+//! assert_eq!(stats.average_score, Some(36.0));
+//! # Ok(())
+//! # }
+//! ```
 use crate::models::Scorecard;
 
+/// Comprehensive statistics for a player's golf performance.
+///
+/// This structure aggregates data from multiple scorecards to provide
+/// insights into a player's performance trends, consistency, and skill level.
+///
+/// # Fields
+///
+/// * `total_rounds` - Total number of scorecards provided (including incomplete)
+/// * `completed_rounds` - Number of completed rounds (all holes recorded)
+/// * `average_score` - Mean score across completed rounds, `None` if no completed rounds
+/// * `best_score` - Lowest total strokes in any completed round
+/// * `worst_score` - Highest total strokes in any completed round
+/// * `total_under_par` - Cumulative strokes under par (negative value)
+/// * `total_over_par` - Cumulative strokes over par (positive value)
+/// * `eagles` - Number of holes played 2+ strokes under par
+/// * `birdies` - Number of holes played 1 stroke under par
+/// * `pars` - Number of holes played at par
+/// * `bogeys` - Number of holes played 1 stroke over par
+/// * `double_bogeys` - Number of holes played 2+ strokes over par
+///
 #[derive(Debug, Clone)]
 pub struct PlayerStatistics {
 pub total_rounds: usize,
@@ -17,6 +70,26 @@ pub total_rounds: usize,
 }
 
 impl PlayerStatistics {
+    /// Creates statistics by analyzing a collection of scorecards.
+    ///
+    /// This method uses iterator patterns and closures to efficiently
+    /// calculate comprehensive statistics from raw scorecard data.
+    ///
+    /// # Arguments
+    ///
+    /// * `scorecards` - Slice of scorecards to analyze
+    ///
+    /// # Returns
+    ///
+    /// A `PlayerStatistics` instance with all fields populated based on
+    /// the provided scorecards. Incomplete rounds are counted but excluded
+    /// from scoring calculations.
+    ///
+    /// # Performance
+    ///
+    /// This method makes multiple passes over the scorecard data using
+    /// iterator chains. For large datasets (1000+ rounds), consider
+    /// caching the result rather than recalculating frequently.    
     pub fn from_scorecards( scorecards: &[Scorecard]) -> Self {
         let total_rounds = scorecards.len();
 
@@ -53,6 +126,7 @@ impl PlayerStatistics {
         }
     }
 
+    
     fn calculate_hole_statistics(scorecards: &[&Scorecard]) -> (usize, usize, usize, usize, usize) {
         let mut eagles = 0;
         let mut birdies = 0;
