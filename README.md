@@ -23,3 +23,5 @@ Because the first rule of learning Rust is: you *do* talk about Rust. (Just not 
 ---
 
 > "It's only after we've lost memory safety that we're free to do anything." — Not Tyler Durden
+
+> "To sign or Not to Sign, that is the question."
